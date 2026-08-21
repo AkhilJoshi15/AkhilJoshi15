@@ -1,30 +1,38 @@
-
 document.getElementById("year").textContent = new Date().getFullYear();
 
-const links = document.querySelectorAll('a[href^="#"]');
-links.forEach(link => {
-  link.addEventListener("click", e => {
-    const target = document.querySelector(link.getAttribute("href"));
-    if (!target) return;
-    e.preventDefault();
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
+const themeColor = document.querySelector('meta[name="theme-color"]');
+const themeButtons = document.querySelectorAll("[data-theme-choice]");
+
+function setTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  try { localStorage.setItem("theme", theme); } catch {}
+  themeColor.setAttribute("content", theme === "dark" ? "#0c111b" : "#f4f5f7");
+
+  themeButtons.forEach(button => {
+    button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme));
   });
+}
+
+themeButtons.forEach(button => {
+  button.addEventListener("click", () => setTheme(button.dataset.themeChoice));
 });
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) entry.target.classList.add("visible");
-  });
-}, { threshold: 0.08 });
+setTheme(document.documentElement.dataset.theme || "light");
 
-document.querySelectorAll(".project-card, .career-row, .paper-list article, .stack-grid article, .credentials div")
-  .forEach(el => {
-    el.style.opacity = "0";
-    el.style.transform = "translateY(12px)";
-    el.style.transition = "opacity .55s ease, transform .55s ease";
-    observer.observe(el);
-  });
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const style = document.createElement("style");
-style.textContent = `.visible{opacity:1!important;transform:translateY(0)!important}`;
-document.head.appendChild(style);
+if (!reduceMotion) {
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: "0px 0px -28px 0px" });
+
+  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+} else {
+  document.querySelectorAll(".reveal").forEach(el => el.classList.add("visible"));
+}

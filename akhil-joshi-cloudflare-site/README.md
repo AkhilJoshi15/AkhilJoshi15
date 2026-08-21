@@ -1,24 +1,14 @@
-# Akhil Joshi — Personal Site
+# Akhil Joshi Portfolio v5
 
-Static portfolio/contact site built with plain HTML, CSS and JavaScript.
+Rebuilt around the real professional story:
 
-## Local preview
-Open `index.html` in a browser.
+1. Cloud / platform engineering first
+2. Koch + Big 4 track record
+3. Strong technical work and justified metrics
+4. Community / research as a supporting differentiator
+5. Minimal education and certification section
 
-## Deploy to Cloudflare Pages
-1. Push these files to a GitHub repository.
-2. In Cloudflare: Workers & Pages → Create application → Pages → Import existing Git repository.
-3. Select the repository.
-4. Production branch: `main`
-5. Build command: `exit 0`
-6. Build output directory: `.`
-7. Deploy.
+## Deploy
+Upload this ZIP directly to Cloudflare Pages.
 
-Cloudflare will give the project a free `*.pages.dev` URL.
-
-## Before publishing
-Replace these placeholder destinations in `index.html`:
-- GitHub profile URL
-- Google Scholar profile URL
-
-Your LinkedIn and email from the provided resume are already wired in.
+No build command is required.
